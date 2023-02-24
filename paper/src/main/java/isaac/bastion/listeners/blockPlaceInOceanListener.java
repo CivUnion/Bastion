@@ -8,6 +8,8 @@ import isaac.bastion.commands.PlayersStates;
 import isaac.bastion.commands.PlayersStates.Mode;
 import isaac.bastion.manager.BastionBlockManager;
 import isaac.bastion.storage.BastionBlockStorage;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -45,19 +47,21 @@ public class blockPlaceInOceanListener implements Listener {
 	}
 	@EventHandler()
 	public void onBlockPlaced(BlockPlaceEvent e) {
+		List<Biome> biomes = new ArrayList<Biome>();
+		biomes.add(Biome.OCEAN); biomes.add(Biome.DEEP_OCEAN); biomes.add(Biome.RIVER);
+		if (!(biomes.contains(e.getBlock().getBiome()))) {
+			e.setCancelled(true);
+			return;
+		}
 		Player player = e.getPlayer();
-		BastionBlock allyBast = null;
 		Set<BastionBlock> Basts = storage.getAllBastions();
 		for (BastionBlock b : Basts) {
 			if (b.canPlace(player) || player.isOp()) {
-				allyBast = b;
-			}
-		}
-		if (e.getBlock().getBiome() == Biome.OCEAN ||e.getBlock().getBiome() == Biome.DEEP_OCEAN || e.getBlock().getBiome() == Biome.RIVER) {
-			if (allyBast.isMature() && allyBast.inField(player.getLocation())) {
-				Block block = e.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
-				if (block.isSolid()) {
-					return;
+				if (b.isMature() && b.inField(player.getLocation())) {
+					Block block = e.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
+					if (block.isSolid()) {
+						return;
+					}
 				}
 			}
 		}
