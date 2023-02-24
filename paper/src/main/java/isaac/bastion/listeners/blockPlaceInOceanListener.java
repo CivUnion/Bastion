@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,20 +45,23 @@ public class blockPlaceInOceanListener implements Listener {
 	}
 	@EventHandler()
 	public void onBlockPlaced(BlockPlaceEvent e) {
+		Player player = e.getPlayer();
+		BastionBlock allyBast = null;
+		Set<BastionBlock> Basts = storage.getAllBastions();
+		for (BastionBlock b : Basts) {
+			if (b.canPlace(player)) {
+				allyBast = b;
+			}
+		}
 		if (e.getBlock().getBiome() == Biome.OCEAN ||e.getBlock().getBiome() == Biome.DEEP_OCEAN || e.getBlock().getBiome() == Biome.RIVER) {
-			Set<BastionBlock> Basts = storage.getAllBastions();
-			for (BastionBlock b : Basts) {
-				if (!b.inField(e.getBlock().getLocation())) {
-					int x = e.getBlock().getX();
-					int z = e.getBlock().getZ();
-					int compX = e.getBlockAgainst().getX();
-					int compZ = e.getBlockAgainst().getZ();
-					if (z - compZ != 0 || x - compX != 0) {
-						e.setCancelled(true);
-						return;
-					}
+			if (allyBast.isMature() && allyBast.inField(player.getLocation())) {
+				Block block = e.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
+				if (block.getType() != Material.AIR) {
+					return;
 				}
 			}
 		}
+		e.setCancelled(true);
 	}
 }
+
