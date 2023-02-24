@@ -3,7 +3,7 @@ package isaac.bastion.listeners;
 import isaac.bastion.BastionBlock;
 import isaac.bastion.storage.BastionBlockStorage;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.block.Biome;
@@ -15,15 +15,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class blockPlaceInOceanListener implements Listener {
-
+	final List<Biome> biomes = Arrays.asList(Biome.OCEAN, Biome.DEEP_OCEAN, Biome.RIVER);
 	private BastionBlockStorage storage;
 	public blockPlaceInOceanListener(BastionBlockStorage storage) {
 		this.storage = storage;
 	}
 	@EventHandler()
 	public void onBlockPlaced(BlockPlaceEvent e) {
-		List<Biome> biomes = new ArrayList<Biome>();
-		biomes.add(Biome.OCEAN); biomes.add(Biome.DEEP_OCEAN); biomes.add(Biome.RIVER);
 		if (!(biomes.contains(e.getBlock().getBiome()))) {
 			e.setCancelled(true);
 			return;
