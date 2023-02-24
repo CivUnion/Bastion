@@ -49,14 +49,14 @@ public class blockPlaceInOceanListener implements Listener {
 		BastionBlock allyBast = null;
 		Set<BastionBlock> Basts = storage.getAllBastions();
 		for (BastionBlock b : Basts) {
-			if (b.canPlace(player)) {
+			if (b.canPlace(player) || player.isOp()) {
 				allyBast = b;
 			}
 		}
 		if (e.getBlock().getBiome() == Biome.OCEAN ||e.getBlock().getBiome() == Biome.DEEP_OCEAN || e.getBlock().getBiome() == Biome.RIVER) {
 			if (allyBast.isMature() && allyBast.inField(player.getLocation())) {
 				Block block = e.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
-				if (block.getType() != Material.AIR) {
+				if (block.isSolid()) {
 					return;
 				}
 			}
