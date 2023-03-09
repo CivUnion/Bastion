@@ -15,7 +15,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import vg.civcraft.mc.civmodcore.ACivMod;
 import vg.civcraft.mc.civmodcore.dao.DatabaseCredentials;
 import vg.civcraft.mc.civmodcore.dao.ManagedDatasource;
-import vg.civcraft.mc.civmodcore.utilities.creative.CivCreativeManager;
 import vg.civcraft.mc.namelayer.GroupManager.PlayerType;
 import vg.civcraft.mc.namelayer.permission.PermissionType;
 
@@ -67,7 +66,7 @@ public final class Bastion extends ACivMod {
 		getServer().getPluginManager().registerEvents(new NameLayerListener(blockStorage), this);
 		getServer().getPluginManager().registerEvents(new CitadelListener(), this);
 		getServer().getPluginManager().registerEvents(new ModeListener(), this);
-		getServer().getPluginManager().registerEvents(new blockPlaceInOceanListener(blockStorage), this);
+		getServer().getPluginManager().registerEvents(new OceanListener(this), this);
 	}
 
 	private void setupDatabase() {

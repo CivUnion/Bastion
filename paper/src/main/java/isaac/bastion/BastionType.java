@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import vg.civcraft.mc.civmodcore.utilities.creative.CivCreativeManager;
+import vg.civcraft.mc.civmodcore.utilities.ItemManager;
 
 public class BastionType {
 	
@@ -444,7 +444,7 @@ public class BastionType {
 				if(defaultType == null) defaultType = key;
 				types.put(key, type);
 				String namespaceSafeKey = key.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9_.\\-]", "");
-				CivCreativeManager.register(NamespacedKey.fromString(namespaceSafeKey, Bastion.getPlugin()), type.getItemRepresentation());
+				ItemManager.register(NamespacedKey.fromString(namespaceSafeKey, Bastion.getPlugin()), type.getItemRepresentation());
 				Bastion.getPlugin().getLogger().log(Level.INFO, "Bastion type {0} loaded: {1}", new Object[]{key, type});
 			}
 		}
